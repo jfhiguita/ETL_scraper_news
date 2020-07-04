@@ -2,7 +2,7 @@ import argparse
 import logging
 logging.basicConfig(level=logging.INFO)
 
-import financial_page_objects as financial
+import news_page_objects as news
 from common import config
 
 
@@ -13,6 +13,10 @@ def _financial_scrapper(financial_site_uid):
     host = config()['financial_sites'][financial_site_uid]['url']
 
     logging.info(f'Beginning scraper for {host}')
+    homepage = news.HomePage(financial_site_uid, host)
+
+    for link in homepage.article_links:
+        print(link)
 
 
 

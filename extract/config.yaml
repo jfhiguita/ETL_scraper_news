@@ -1,8 +1,11 @@
 financial_sites:
   portafolio:
     url: https://www.portafolio.co/
+    queries:
+      homepage_article_links: '//h3/a/@href'
   larepublica:
     url: https://www.larepublica.co/
-    
+    queries:
+      homepage_article_links: '//h2/a/@href'
 
    
