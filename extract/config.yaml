@@ -3,9 +3,17 @@ financial_sites:
     url: https://www.portafolio.co/
     queries:
       homepage_article_links: '//h3/a/@href'
+      article_body: '//p[@class="parrafo"]//text()'
+      article_title: '//h1/text()'
+      article_summary: '//div[@class="article-content"]/p[1]/text()'
   larepublica:
     url: https://www.larepublica.co/
     queries:
       homepage_article_links: '//h2/a/@href'
+      article_body: ''
+      article_title: ''
+      article_summary: ''
+
+
 
    

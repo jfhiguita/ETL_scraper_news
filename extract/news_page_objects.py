@@ -3,7 +3,7 @@ import lxml.html as html
 
 from common import config
 
-class HomePage:
+class NewsPage:
     #configuracion 
     def __init__(self, financial_site_uid, url):
         self._config = config()['financial_sites'][financial_site_uid]
@@ -11,6 +11,23 @@ class HomePage:
         self._parsed = None
 
         self._visit(url)
+
+    #obtener informacion del documento que acabamos de parsear segun el query
+    def _select(self, query_string):
+        return self._parsed.xpath(query_string)
+
+    #visitar la pagina
+    def _visit(self, url):
+        response = requests.get(url)
+        response.raise_for_status()
+        home = response.content.decode('UTF-8')
+        self._parsed = html.fromstring(home)
+
+
+class HomePage(NewsPage):
+
+    def __init__(self, financial_site_uid, url):
+        super().__init__(financial_site_uid, url)
 
     @property
     def article_links(self):
@@ -22,14 +39,23 @@ class HomePage:
         return set(link for link in link_list)
 
 
-    #obtener informacion del documento que acabamos de parsear segun el query
-    def _select(self, query_string):
-        return self._parsed.xpath(query_string)
+class ArticlePage(NewsPage):
 
+    def __init__(self, financial_site_uid, url):
+        super().__init__(financial_site_uid, url)
 
-    #visitar la pagina
-    def _visit(self, url):
-        response = requests.get(url)
-        response.raise_for_status()
-        home = response.content.decode('UTF-8')
-        self._parsed = html.fromstring(home)
+    @property
+    def body(self):
+        result = self._select(self._queries['article_body'])
+        return result if len(result) else ''
+
+    @property
+    def title(self):
+        result = self._select(self._queries['article_title'])
+        return result[0] if len(result) else ''
+
+    @property
+    def summary(self):
+        result = self._select(self._queries['article_summary'])
+        return result[0] if len(result) else ''
+
