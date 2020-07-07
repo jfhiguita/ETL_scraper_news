@@ -31,7 +31,7 @@ def _financial_scrapper(financial_site_uid):
         if article:
             logger.info('Article fetched!!!')
             articles.append(article)
-        
+
 
     _save_articles(financial_site_uid, articles)
 
